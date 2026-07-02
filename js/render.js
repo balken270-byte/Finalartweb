@@ -88,8 +88,6 @@ export function createRenderer(canvas, game, assets) {
   const effects = [];             // {update(dt) → alive?}
   const pickables = [ground, capitol];
 
-  for (const n of game.nodes) addNode(n);
-
   // ------------------------------------------------ materials & helpers
   const beamGeo = new THREE.CylinderGeometry(0.09, 0.09, 1, 6, 1, true);
   const addMat = c => new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false });
@@ -133,6 +131,9 @@ export function createRenderer(canvas, game, assets) {
     x.fillStyle = gr; x.fillRect(0, 0, 64, 64);
     _glowTex = new THREE.CanvasTexture(c); return _glowTex;
   }
+
+  // create data-node visuals (must run after _glowTex is initialized above)
+  for (const n of game.nodes) addNode(n);
 
   // ------------------------------------------------ capitol
   function buildCapitol() {
